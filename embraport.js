@@ -35,15 +35,18 @@ function postProcess(output, input) {
     const parseDate = (date) => {
 
       if(date)  {
-        let splitDate = date.split(" ");
-        let day = splitDate[0]
-        let month = parseMonth(splitDate[2].toLowerCase());
-        let year = splitDate[4]
+        let day, monthText, year, trash1, trash2;
+
+        [day, trash1, monthText, trash2, year] = date.split(" ");
+
+        let month = parseMonth(monthText.toLowerCase());
+
         let currentDate = new Date();
         let hoursAndMinutes = currentDate.getHours() + ':' + currentDate.getMinutes();
-        let correctedDate = `${month}/${day}/${year}`;
-        let dateTime = `${correctedDate} ${hoursAndMinutes}`;
-        return new Date(dateTime).toString();
+
+        let formattedDate = `${month}/${day}/${year}`;
+        let formattedDateTime = `${formattedDate} ${hoursAndMinutes}`;
+        return new Date(formattedDateTime).toString();
       }
 
       return new Date().toString();
@@ -58,12 +61,11 @@ function postProcess(output, input) {
         }
 
         let pubdate = parseDate(article.pubdate);
-        let image = article.image.split('?');
 
         article.image = image[0];
         article.pubdate = pubdate;
         article.date = new Date().toString();
-        article.author = "ANTAQ";
+        article.author = "Embraport / DP World Santos";
         article.valid = true;
         article.summary = article.description;
 
